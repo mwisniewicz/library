@@ -1,11 +1,8 @@
+from datetime import datetime
 from library_module.cons import ALLOWED_COMMANDS, MSG
-from library_module.library import Biblioteka
+from library_module.library import Biblioteka, Book
+from library_module.person import User
 
-# books = [
-#     {'id': 1, 'title': '', 'author': ''},
-#     {'id': 2, 'title': '', 'author': ''},
-# ]
-books = []
 
 bib = Biblioteka(address="Warszawa", name="Moja Biblioteka")
 
@@ -30,3 +27,5 @@ while True:
         bib.get_book()
     if command == 'del_book':
         bib.del_book()
+    if command == 'book_status':
+        bib.get_book_status()

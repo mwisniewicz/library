@@ -1,4 +1,7 @@
 from .person import User
+from datetime import datetime
+from datetime import timedelta
+import os
 
 class Biblioteka:
     """ Klasa reprezentująca bibliotekę,
@@ -43,7 +46,10 @@ class Biblioteka:
                 print("Brak użytkownika w bazie!")
             else:
                 user_.books.append(book_)
+                book_.user = user_
                 book_.status = 'unavailable'
+                book_.get_date = datetime.now().date()
+                book_.return_date = book_.get_date + timedelta(days=14)
                 print(f"{user_} wypożycza książkę {book_}")
 
     def del_book(self):
@@ -57,6 +63,9 @@ class Biblioteka:
             if book_:
                 user_.books.remove(book_)
                 book_.status = 'available'
+                book_.user = None
+                book_.get_date = None
+                book_.return_date = None
                 print(f"{user_} zwraca książkę {book_}")
             else:
                 print(f"Brak książki w bazie!")
@@ -117,6 +126,17 @@ class Biblioteka:
         else:
             print(self.users)
 
+    def get_book_status(self):
+        book_id = int(input("Podaj ID książki: "))
+        book = self.get_book_by_id(book_id)
+        if book.user:
+            message = f'''
+            Książkę wypozyczyl {book.user}
+            Książke oddajemy za {book.days_to_return()} dni
+            '''
+            print(message)
+        else:
+            print("Książka dostępna!")
 
 class Book:
     
@@ -126,10 +146,16 @@ class Book:
         self.author = author
         self.status = 'available'
         self.user = None
+
         self.return_date = None
+        self.get_date = None
 
     def __str__(self):
         return f"({self.id}) {self.title} - {self.author} {(self.status)}"
 
     def __repr__(self):
         return f"({self.id}) {self.title} - {self.author} {(self.status)}"
+
+    def days_to_return(self):
+        date_delta = self.return_date - datetime.now().date()
+        return date_delta.days

@@ -6,6 +6,7 @@ ALLOWED_COMMANDS = (
     'add_user',
     'get_book',
     'del_book',
-    'stop'
+    'stop',
+    'book_status'
 )
 MSG = "NIEPRAWIDŁOWA KOMENDA!"
